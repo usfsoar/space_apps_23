@@ -95,7 +95,6 @@ class Rendering {
     // current fps
     this.stats = Stats();
 
-
     }
 
     
@@ -103,13 +102,17 @@ class Rendering {
         this.rotate_value = x;
     }
     
-    changetexture(x) {
-        if (x == 0){
-            this.earthMaterial.bumpMap = THREE.ImageUtils.loadTexture('texture/earthbump.png')
-        }
-        
+    change_texture(a,b) {
+        a = "texture/" + a.toString()
+
+        b = "texture/" + b.toString()
+        console.log(a,b)
+        this.earthMaterial.map = THREE.ImageUtils.loadTexture(a)    
+        this.earthMaterial.bumpmap = THREE.ImageUtils.loadTexture(b);
+
 
     }
+
 
     // spinning animation
     animate = () => {
@@ -142,5 +145,7 @@ rendering.animate();
 setTimeout(() => {
     rendering.setRotation(-0.001);
     console.log("start rotation");
+    //rendering.change_texture("moonmap.jpg","moonbump.png");
+    rendering.change_texture("earthmap1k2.jpg","earthbump.jpg");
 
 }, 3000);
