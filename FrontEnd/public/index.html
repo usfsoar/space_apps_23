@@ -12,26 +12,48 @@
 <body>
     <!--Search bar-->
     <div id="header">
-        <input type="text" id="search-bar" placeholder="Search...">
-    </div>
-    
-    <!--Zoom-->
-    <div id="zoom-buttons">
-        <button id="zoom-in">Zoom In</button>
-        <button id="zoom-out">Zoom Out</button>
+        <div style="display:flex; flex-wrap: nowrap;">
+            <input type="text" id="search-bar" placeholder="Input Coordinates...">
+            <button id="search-button">Search</button>
+        </div>
+        <!--Zoom-->
+        <div id="zoom-buttons">
+            <button id="zoom-in">+</button>
+            <button id="zoom-out">-</button>
+        </div>
     </div>
 
     <!--Slider-->
     <div id="year-slider-container">
-        <input type="range" id="year-slider" class="custom-slider" min="1969" max="2000" step="1" value="1985">
-        <span id="year-value">1972</span>
+        <input type="range" id="year-slider" class="custom-slider" min="1969" max="1977" step="1" value="1969">
+        <span id="year-value">1969</span>
     </div>
+
+    <!-- Table Container -->
+    <div id="table-container">
+        <table id="data-table">
+            <tr>
+                <td>Option 1khgbzffadngadkfgn</td>
+                <td><input type="checkbox" id="option1" name="option1" value="Option 1"></td>
+            </tr>
+            <tr>
+                <td>Option 2</td>
+                <td><input type="checkbox" id="option2" name="option2" value="Option 2"></td>
+            </tr>
+            <tr>
+                <td>Option 3</td>
+                <td><input type="checkbox" id="option3" name="option3" value="Option 3"></td>
+            </tr>
+        </table>
+    </div>
+
+    
 
     <canvas class="webgl rendering"></canvas>
     <div class=""></div>
 
     <script type="module" src="./client.js"></script>
-    <script src="ui-app.js"></script>
+    <script src="ui-manager.js"></script>
 </body>
 
 </html>

@@ -2,16 +2,20 @@ import * as THREE from '/build/three.module.js';
 import { OrbitControls } from '/jsm/controls/OrbitControls.js';
 import Stats from '/jsm/libs/stats.module.js';
 
+
 class Rendering {
 
     constructor(){
+        
 
         // global variables
     this.scene;
-    this.camera;
+    this.camera;    
     this.renderer;
     const canvas = document.querySelector('.webgl');
-
+    this.points_data;
+    this.load_points_json('country-capitals.json');
+    
     // scene setup
     this.scene = new THREE.Scene();
 
@@ -55,7 +59,6 @@ class Rendering {
     this.earthMesh = new THREE.Mesh(earthGeometry, this.earthMaterial);
     this.scene.add(this.earthMesh);
 
-
     // galaxy geometry
     const starGeometry = new THREE.SphereGeometry(80, 64, 64);
 
@@ -92,24 +95,84 @@ class Rendering {
         render();
     }, false);
 
+
+    //point 
+
+    const axesHelper = new THREE.AxesHelper( 1 );
+    this.scene.add( axesHelper );
+
+ 
+
     // current fps
     this.stats = Stats();
 
-
     }
 
+    create_point2(px,py,colors){ 
+        const pointGeo = new THREE.SphereGeometry(0.02, 20, 20);
+        const pointMat = new THREE.MeshPhongMaterial({color:colors});
+        this.pointMesh = new THREE.Mesh(pointGeo, pointMat);
+
+        let lat = (px) * Math.PI/ 180 ;
+        let lng = (py) * Math.PI / 180 ;
+
+        let x = (1)*0.6*Math.cos(lng) * Math.sin(lat);
+        let y = (1)*0.6*Math.sin(lng) * Math.sin(lat);
+        let z = (1)*0.6*Math.cos(lat);
+        
+        this.pointMesh.position.set(x,y,z);
+        
+
+        this.scene.add(this.pointMesh);    
+    };
+
+    async load_points_json(filename){
+        let res = await fetch(filename);
+        if (!res.ok){
+            throw new Error('Freaking server didnt respond');
+        }
+        this.points_data = await res.json();
+        console.log(this.points_data);
+    }
     
     setRotation(x) {
         this.rotate_value = x;
     }
     
-    changetexture(x) {
-        if (x == 0){
-            this.earthMaterial.bumpMap = THREE.ImageUtils.loadTexture('texture/earthbump.png')
-        }
+    change_texture(a,b) {
+        a = "texture/" + a.toString()
+
+        b = "texture/" + b.toString()
+        console.log(a,b)
+        this.earthMaterial.map = THREE.ImageUtils.loadTexture(a)    
+        this.earthMaterial.bumpmap = THREE.ImageUtils.loadTexture(b);
+
+
+    };
+
+
+    /*
+    create_point(a) {
+
         
+        let pointGeo = new THREE.SphereGeometry(0.005, 20, 20)
+        let pointMat = new THREE.MeshPhongMaterial({color:0xff0000});
+        let pointMesh = new THREE.Mesh(pointGeo, pointMat);
+
+        let lat = coordinates[a].x * Math.PI / 180 ;
+        let lng = coordinates[a].y * Math.PI / 180 ;
+
+        let x = 0.6*Math.cos(lng) * Math.sin(lat);
+        let y = 0.6*Math.sin(lng) * Math.sin(lat);
+        let z = 0.6*Math.cos(lat);
+        
+        pointMesh.position.set(x, y, z)
+        
+        this.scene.add(pointMesh);
 
     }
+    
+    */
 
     // spinning animation
     animate = () => {
@@ -121,6 +184,7 @@ class Rendering {
             this.earthMesh.rotation.y += this.rotate_value; // Adjust the rotation speed as needed
         }
 
+
         this.controls.update();
         this.render();
         this.stats.update();
@@ -129,18 +193,66 @@ class Rendering {
 
     // rendering
     render = () => {
+       
         this.renderer.render(this.scene, this.camera);
     }
 
-  
+    
 };  
+
+
+
 
 let rendering = new Rendering();
 rendering.setRotation(0);
 rendering.animate();
 
 setTimeout(() => {
-    rendering.setRotation(-0.001);
+    //rendering.setRotation(-0.001);
     console.log("start rotation");
+    let coordinates = rendering.points_data.map(x=>({x:x.CapitalLatitude, y:x.CapitalLongitude}));
+    console.log(coordinates)
+    console.log(coordinates[1].x);
+    
+    rendering.create_point2(    
+        
+        90,90
+        , "#7FFFD4"
 
-}, 3000);
+        )
+
+    rendering.create_point2(    
+    
+        90,0, "#FFA500"
+
+
+        )
+    
+    rendering.create_point2(    
+    
+        0,0, "#0000FF"
+
+        )
+
+
+    
+    /*
+    for (let i = 0; i < coordinates.length; i++) {
+        console.log(i);
+       
+        rendering.create_point2(coordinates[i].x,coordinates[i].y)
+
+    }
+    */
+
+
+    //rendering.create_point(coordinates)
+
+    //rendering.change_texture("moonmap.jpg","moonbump.png");
+    //rendering.change_texture("earthmap1k2.jpg","earthbump.jpg");
+
+    //console.log(capitals.CountryName)
+
+
+}, 1000);
+

@@ -4,15 +4,21 @@ class UI {
       this.zoomInButton = document.getElementById('zoom-in');
       this.zoomOutButton = document.getElementById('zoom-out');
   
-      this.currentYear = 1972; // Set an initial year
+      this.currentYear = 1969; // Set an initial year
       this.yearSlider = document.getElementById('year-slider');
       this.yearValue = document.getElementById('year-value');
+      //options
+      this.option1 = document.getElementById('option1');
+      this.option1Value=0;
+
   
       //add functions
       this.zoomInButton.addEventListener('click', this.zoomIn.bind(this));
       this.zoomOutButton.addEventListener('click', this.zoomOut.bind(this));
       this.yearSlider.addEventListener('input', this.handleYearSlider.bind(this));
       this.updateYearValue();
+      //functions for options
+      this.option1.addEventListener('change', this.updateCheck1.bind(this));
     }
   
     zoomIn() {
@@ -31,6 +37,15 @@ class UI {
     updateYearValue() {
       // Update the displayed year value
       this.yearValue.textContent = this.currentYear;
+    }
+
+    //create functions for options
+    updateCheck1(){
+        if (this.option1.checked) {
+            this.option1Value = 1;
+        } else {
+            this.option1Value = 0;
+        }
     }
   }
   
