@@ -5,16 +5,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three js earth</title>
+    <title>Moonquake</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+    <!--Search bar-->
+    <div id="header">
+        <input type="text" id="search-bar" placeholder="Search...">
+    </div>
     
-    <canvas class="webgl"></canvas>
+    <!--Zoom-->
+    <div id="zoom-buttons">
+        <button id="zoom-in">Zoom In</button>
+        <button id="zoom-out">Zoom Out</button>
+    </div>
+
+    <!--Slider-->
+    <div id="year-slider-container">
+        <input type="range" id="year-slider" class="custom-slider" min="1969" max="2000" step="1" value="1985">
+        <span id="year-value">1972</span>
+    </div>
+
+    <canvas class="webgl rendering"></canvas>
     <div class=""></div>
 
     <script type="module" src="./client.js"></script>
+    <script src="ui-app.js"></script>
 </body>
 
 </html>
