@@ -94,7 +94,7 @@ class Rendering {
 
     // current fps
     this.stats = Stats();
-    document.body.appendChild(this.stats.dom);
+
 
     }
 
@@ -105,8 +105,9 @@ class Rendering {
     
     changetexture(x) {
         if (x == 0){
-
-        };
+            this.earthMaterial.bumpMap = THREE.ImageUtils.loadTexture('texture/earthbump.png')
+        }
+        
 
     }
 
