@@ -214,7 +214,7 @@ setTimeout(() => {
     console.log(coordinates)
     console.log(coordinates[1].x);
     
-    rendering.create_point2(28.857501,-81.862900)
+    rendering.create_point2(0,0)
     
     /*
     for (let i = 0; i < coordinates.length; i++) {
