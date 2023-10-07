@@ -2,126 +2,144 @@ import * as THREE from '/build/three.module.js';
 import { OrbitControls } from '/jsm/controls/OrbitControls.js';
 import Stats from '/jsm/libs/stats.module.js';
 
-// global variables
-let scene;
-let camera;
-let renderer;
-const canvas = document.querySelector('.webgl');
+class Rendering {
 
-// scene setup
-scene = new THREE.Scene();
+    constructor(){
 
-// camera setup
-const fov = 60;
-const aspect = window.innerWidth / window.innerHeight;
-const near = 0.1;
-const far = 100;
+        // global variables
+    this.scene;
+    this.camera;
+    this.renderer;
+    const canvas = document.querySelector('.webgl');
 
-camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.z = 2;
-scene.add(camera);
+    // scene setup
+    this.scene = new THREE.Scene();
 
-// renderer setup
-renderer = new THREE.WebGLRenderer({
-    canvas: canvas,
-    antialias: true,
-});
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio((window.devicePixelRatio) ? window.devicePixelRatio : 1);
-renderer.autoClear = false;
-renderer.setClearColor(0x000000, 0.0);
+    // this.camera setup
+    const fov = 60;
+    const aspect = window.innerWidth / window.innerHeight;
+    const near = 0.1;
+    const far = 100;
 
-// orbit control setup
-const controls = new OrbitControls(camera, renderer.domElement);
+    this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    this.camera.position.z = 2;
+    this.scene.add(this.camera);
 
-// earth geometry
-const earthGeometry = new THREE.SphereGeometry(0.6, 32, 32);
+    // renderer setup
+    this.renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+    });
 
-// earth material
-const earthMaterial = new THREE.MeshPhongMaterial({
-    roughness: 1,
-    metalness: 0,
-    map: THREE.ImageUtils.loadTexture('texture/moonmap.jpg'),
-    bumpMap: THREE.ImageUtils.loadTexture('texture/moonbump.png'),
-    bumpScale: 0.1
-});
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setPixelRatio((window.devicePixelRatio) ? window.devicePixelRatio : 1);
+    this.renderer.autoClear = false;
+    this.renderer.setClearColor(0x000000, 0.0);
 
-// earth mesh
-const earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
-scene.add(earthMesh);
+    // orbit control setup
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-// cloud Geometry
-const cloudGeometry = new THREE.SphereGeometry(0.63, 32, 32);
+    // earth geometry
+    const earthGeometry = new THREE.SphereGeometry(0.6, 32, 32);
 
-// cloud metarial
-const cloudMetarial = new THREE.MeshPhongMaterial({
-    map: THREE.ImageUtils.loadTexture('texture/earthCloud.png'),
-    transparent: true,
-});
+    // earth material
+    this.earthMaterial = new THREE.MeshPhongMaterial({
+        roughness: 1,
+        metalness: 0,
+        map: THREE.ImageUtils.loadTexture('texture/moonmap.jpg'),
+        bumpMap: THREE.ImageUtils.loadTexture('texture/moonbump.png'),
+        bumpScale: 0.1
+    });
 
-// cloud mesh
-const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMetarial);
-scene.add(cloudMesh);
+    // earth mesh
+    this.earthMesh = new THREE.Mesh(earthGeometry, this.earthMaterial);
+    this.scene.add(this.earthMesh);
 
-// galaxy geometry
-const starGeometry = new THREE.SphereGeometry(80, 64, 64);
 
-// galaxy material
-const starMaterial = new THREE.MeshBasicMaterial({
-    map : THREE.ImageUtils.loadTexture('texture/galaxy.png'),
-    side: THREE.BackSide
-});
+    // galaxy geometry
+    const starGeometry = new THREE.SphereGeometry(80, 64, 64);
 
-// galaxy mesh
-const starMesh = new THREE.Mesh(starGeometry, starMaterial);
-scene.add(starMesh);
+    // galaxy material
+    const starMaterial = new THREE.MeshBasicMaterial({
+        map : THREE.ImageUtils.loadTexture('texture/galaxy.png'),
+        side: THREE.BackSide
+    });
 
-// ambient light
-const ambientlight = new THREE.AmbientLight(0xffffff, 0.2);
-scene.add(ambientlight);
+    // galaxy mesh
+    this.starMesh = new THREE.Mesh(starGeometry, starMaterial);
+    this.scene.add(this.starMesh);
 
-// point light
-const pointLight = new THREE.PointLight(0xffffff, 1)
+    // ambient light
+    const ambientlight = new THREE.AmbientLight(0xffffff, 0.2);
+    this.scene.add(ambientlight);
 
-//change position of the camera, it always point towards the moon
-pointLight.position.set(5, 3, 5);
-scene.add(pointLight);
+    // point light
+    const pointLight = new THREE.PointLight(0xffffff, 1)
 
-// point light helper
-const Helper = new THREE.PointLightHelper(pointLight);
-scene.add(Helper);
+    //change position of the this.camera, it always point towards the moon
+    pointLight.position.set(5, 3, 5);
+    this.scene.add(pointLight);
 
-// handling resizing
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    render();
-}, false);
+    // point light helper
+    const Helper = new THREE.PointLightHelper(pointLight);
+    this.scene.add(Helper);
 
-// current fps
-const stats = Stats();
-document.body.appendChild(stats.dom);
+    // handling resizing
+    window.addEventListener('resize', () => {
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        render();
+    }, false);
 
-// spinning animation
-const animate = () => {
-    requestAnimationFrame(animate);
-    //starMesh.rotation.y -= 0.002;
-    //earthMesh.rotation.y -= 0.0015;
-    //cloudMesh.rotation.y -= 0.001;
-    var i = 1;
-    i += 0.1;
-    //pointLight.position.x += 5 * Math.cos(i);
-    //pointLight.position.y = 5 * Math.sin(i);
+    // current fps
+    this.stats = Stats();
+    document.body.appendChild(this.stats.dom);
 
-    controls.update();
-    render();
-    stats.update();
-};
+    }
 
-// rendering
-const render = () => {
-    renderer.render(scene, camera);
-}
+    
+    setRotation(x) {
+        this.rotate_value = x;
+    }
+    
+    changetexture(x) {
+        if (x == 0){
 
-animate();
+        };
+
+    }
+
+    // spinning animation
+    animate = () => {
+        requestAnimationFrame(this.animate);
+        //this.starMesh.rotation.y -= 0.002;
+        //this.earthMesh.rotation.y += 0.0015;
+
+        if (this.rotate_value != 0) {
+            this.earthMesh.rotation.y += this.rotate_value; // Adjust the rotation speed as needed
+        }
+
+        this.controls.update();
+        this.render();
+        this.stats.update();
+    };
+
+
+    // rendering
+    render = () => {
+        this.renderer.render(this.scene, this.camera);
+    }
+
+  
+};  
+
+let rendering = new Rendering();
+rendering.setRotation(0);
+rendering.animate();
+
+setTimeout(() => {
+    rendering.setRotation(-0.001);
+    console.log("start rotation");
+
+}, 3000);
