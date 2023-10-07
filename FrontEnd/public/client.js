@@ -108,19 +108,19 @@ class Rendering {
 
     }
 
-    create_point2(px,py){ 
-        const pointGeo = new THREE.SphereGeometry(0.005, 20, 20);
-        const pointMat = new THREE.MeshPhongMaterial({color:0xff0000});
+    create_point2(px,py,colors){ 
+        const pointGeo = new THREE.SphereGeometry(0.02, 20, 20);
+        const pointMat = new THREE.MeshPhongMaterial({color:colors});
         this.pointMesh = new THREE.Mesh(pointGeo, pointMat);
 
-        let lat = px * Math.PI / 180 ;
-        let lng = py * Math.PI / 180 ;
+        let lat = (px) * Math.PI/ 180 ;
+        let lng = (py) * Math.PI / 180 ;
 
-        let x = 0.6*Math.cos(lng) * Math.sin(lat);
-        let y = 0.6*Math.sin(lng) * Math.sin(lat);
-        let z = 0.6*Math.cos(lat);
+        let x = (1)*0.6*Math.cos(lng) * Math.sin(lat);
+        let y = (1)*0.6*Math.sin(lng) * Math.sin(lat);
+        let z = (1)*0.6*Math.cos(lat);
         
-        this.pointMesh.position.set(x, y, z);
+        this.pointMesh.position.set(x,y,z);
         
 
         this.scene.add(this.pointMesh);    
@@ -214,7 +214,27 @@ setTimeout(() => {
     console.log(coordinates)
     console.log(coordinates[1].x);
     
-    rendering.create_point2(0,0)
+    rendering.create_point2(    
+        
+        90,90
+        , "#7FFFD4"
+
+        )
+
+    rendering.create_point2(    
+    
+        90,0, "#FFA500"
+
+
+        )
+    
+    rendering.create_point2(    
+    
+        0,0, "#0000FF"
+
+        )
+
+
     
     /*
     for (let i = 0; i < coordinates.length; i++) {
@@ -229,10 +249,10 @@ setTimeout(() => {
     //rendering.create_point(coordinates)
 
     //rendering.change_texture("moonmap.jpg","moonbump.png");
-    rendering.change_texture("earthmap1k2.jpg","earthbump.jpg");
+    //rendering.change_texture("earthmap1k2.jpg","earthbump.jpg");
 
     //console.log(capitals.CountryName)
 
 
-}, 2000);
+}, 1000);
 
