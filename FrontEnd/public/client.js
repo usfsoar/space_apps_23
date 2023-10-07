@@ -98,7 +98,8 @@ class Rendering {
 
     //point 
 
-    
+    const axesHelper = new THREE.AxesHelper( 1 );
+    this.scene.add( axesHelper );
 
  
 
@@ -213,7 +214,7 @@ setTimeout(() => {
     console.log(coordinates)
     console.log(coordinates[1].x);
     
-    rendering.create_point2(9.5,340)
+    rendering.create_point2(28.857501,-81.862900)
     
     /*
     for (let i = 0; i < coordinates.length; i++) {
@@ -228,10 +229,10 @@ setTimeout(() => {
     //rendering.create_point(coordinates)
 
     //rendering.change_texture("moonmap.jpg","moonbump.png");
-    //rendering.change_texture("earthmap1k2.jpg","earthbump.jpg");
+    rendering.change_texture("earthmap1k2.jpg","earthbump.jpg");
 
     //console.log(capitals.CountryName)
 
 
-}, 3000);
+}, 2000);
 
