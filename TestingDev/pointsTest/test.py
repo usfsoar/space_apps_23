@@ -17,7 +17,7 @@ f = open('locations.json')
 data = json.load(f)
 
 # Create a plot
-plt.figure(figsize=(8, 8))
+plt.figure(figsize=(8,8))
 
 # Display the Moon image
 plt.imshow(moon_image)
@@ -27,16 +27,15 @@ plt.imshow(moon_image)
 for i in data:
     latitude=i['Lat']
     longitude=i['Long']
+    # latitude=54
+    # longitude=10
     if(not longitude):
         continue
-    
+    if longitude>180:
+        longitude-=360
     # Convert latitude and longitude to image coordinates (adjust this as needed)
-    image_x = (moon_width/360)*(180+longitude)
-    latRad = latitude*math.pi/180
-    mercN = math.log(math.tan((math.pi/4)+(latRad/2)))
-    image_y = (moon_height/2)-(moon_width*mercN/(2*math.pi))
-    if image_y<0:
-        print(longitude)
+    image_x = (longitude + 180) * (moon_width / 360)
+    image_y = (90 - latitude) * (moon_height / 180)
     # Plot points on the image
     plt.scatter(image_x, image_y, color='red', marker='o', label='Sample Points')
  
