@@ -14,7 +14,8 @@ class Rendering {
     this.renderer;
     const canvas = document.querySelector('.webgl');
     this.points_data;
-    this.load_points_json('country-capitals.json');
+    this.load_points_json('nakamura.json');
+    
     
     // scene setup
     this.scene = new THREE.Scene();
@@ -176,12 +177,13 @@ class Rendering {
     async load_points_json(filename){
         let res = await fetch(filename);
         if (!res.ok){
-            throw new Error('Freaking server didnt respond');
+            throw new Error('Server didnt respond');
         }
         this.points_data = await res.json();
         console.log(this.points_data);
     }
     
+ 
     setRotation(x) {
         this.rotate_value = x;
     }
@@ -257,7 +259,7 @@ rendering.animate();
 setTimeout(() => {
     //rendering.setRotation(-0.001);
     console.log("start rotation");
-    let coordinates = rendering.points_data.map(x=>({x:x.CapitalLatitude, y:x.CapitalLongitude}));
+    let coordinates = rendering.points_data.map(x=>({x:x.Lat, y:x.Long}));
     console.log(coordinates)
     console.log(coordinates[1].x);
     
@@ -274,19 +276,20 @@ setTimeout(() => {
         0,0, "#0000FF"
         )
     
+        /*
     rendering.create_point2(     
         -90, 180, "#FFFFFF"
         )
-
+        */
     
-    /*
+
     for (let i = 0; i < coordinates.length; i++) {
         console.log(i);
        
         rendering.create_point2(coordinates[i].x,coordinates[i].y)
 
     }
-    */
+
 
 
     //rendering.create_point(coordinates)
