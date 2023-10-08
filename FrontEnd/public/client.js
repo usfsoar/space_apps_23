@@ -271,31 +271,31 @@ setTimeout(() => {
         )
     
         
-    rendering.create_point2(     
-       -33, 330, "#FFFFFF"
-       )
+    // rendering.create_point2(     
+    //    -33, 330, "#FFFFFF"
+    //    )
 
-    rendering.create_point2(     
-        24,146, "#FFFFFF"
-    )
+    // rendering.create_point2(     
+    //     24,146, "#FFFFFF"
+    // )
 
-    rendering.create_point2(     
-        -21.25, 130, "#FFFFFF"
-        )
+    // rendering.create_point2(     
+    //     -21.25, 130, "#FFFFFF"
+    //     )
 
-    rendering.create_point2(     
-        54, 290, "#FFFFFF"
-        )
+    // rendering.create_point2(     
+    //     54, 290, "#FFFFFF"
+    //     )
         
     
     
 
-    // for (let i = 0; i < coordinates.length; i++) {
+    for (let i = 0; i < coordinates.length; i++) {
 
-    //     console.log(i);
-    //     rendering.create_point2(coordinates[i].x,coordinates[i].y)
+        console.log(i);
+        rendering.create_point2(coordinates[i].x,coordinates[i].y)
         
-    // }
+    }
 
 
 
