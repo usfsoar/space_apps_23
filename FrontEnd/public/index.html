@@ -18,7 +18,7 @@
     <div id="main-visual">
         <!--Search bar-->
         <div id="header">
-            <div style="display:flex; flex-wrap: nowrap;">
+            <div style="display:flex; flex-wrap: nowrap; top:30px">
                 <input type="text" id="search-bar" placeholder="What would you like to know...">
                 <button id="search-button">Search</button>
             </div>
@@ -36,7 +36,7 @@
         </div>
 
         <!-- Table Container -->
-        <div id="table-container">
+        <!-- <div id="table-container">
             <table id="data-table">
                 <tr>
                     <td>> Display Information</td>
@@ -51,7 +51,7 @@
                     <td><input type="checkbox" id="option3" name="option3" value="Option 3"></td>
                 </tr>
             </table>
-        </div>
+        </div> -->
 
         
 
@@ -59,30 +59,36 @@
         <div class=""></div>
     </div>
 
-    <div id="projector-visual">
+    <div id="projector-visual" style="display:none">
         <div id="projector-header">
             <h3>Press F11 for full screen</h3>
         </div>
+        <div id="bluetooth-btn" style="position:fixed; display:flex; bottom:0; right:0;z-index:299">
+            <button id="btConnect" style="padding:1rem">Connect</button>
+        </div>
         <div class="buttons-list">
             <!-- Six buttons -->
+            
+            <button class="proj-button7">Play</button>
+            <button class="proj-button7">Stop</button>
+            <div style="height:5rem"></div>
             <button class="proj-button1">1971</button>
             <button class="proj-button2">1972</button>
             <button class="proj-button3">1973</button>
             <button class="proj-button4">1974</button>
             <button class="proj-button5">1975</button>
             <button class="proj-button6">1976</button>
-            <button class="proj-button7">Play</button>
-            <button class="proj-button7">Stop</button>
         </div>
         <div id="img">
-            <img class="center-fit" src='./texture/moonmap.jpg'>
+            <img id="moonmap" class="center-fit" src='./texture/moonmap.jpg'>
         </div>
         
         
         
 
-    <script type="module" src="./client.js"></script>
-    <script src="ui-manager.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+    <script type="module" src="client.js"></script>
+    <script type="module" src="ui-manager.js"></script>
     <script type="module" src="main.js"></script>
 </body>
 
