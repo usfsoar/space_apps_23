@@ -109,7 +109,7 @@ class Rendering {
 
     }
 
-    create_point2(py, px, colors) {
+    create_point2(py, px, colors, text) {
     const pointGeo = new THREE.SphereGeometry(0.02, 20, 20);
     const pointMat = new THREE.MeshPhongMaterial({ color: colors });
     this.pointMesh = new THREE.Mesh(pointGeo, pointMat);
@@ -125,15 +125,17 @@ class Rendering {
     this.scene.add(this.pointMesh);
     const loader = new THREE.FontLoader();
     loader.load('Orbitron_Regular.json', (font) => {
-        const geometry = new THREE.TextGeometry('Hello world, json, hello, my friend, darknes, rises, in light, anakin, obi wan, yoda, lol \nwtf', {
+        const geometry = new THREE.TextGeometry((text), {
             font: font,
             size: 0.015,
             height: 0.00001
         });
 
+
         // Create a bounding box for the text geometry to get its size
         const box = new THREE.Box3().setFromObject(new THREE.Mesh(geometry));
         const textSize = box.getSize(new THREE.Vector3());
+        
 
         const textMaterial = [
             new THREE.MeshPhongMaterial({
@@ -155,6 +157,10 @@ class Rendering {
         backgroundMesh.position.x = textMesh.position.x + 0.05 + (textSize.x / 2);  // Adjust position based on the text's bounding box size
         backgroundMesh.position.z = z - 0.001; // Position it slightly behind the text
 
+        backgroundMesh.lookAt(this.camera.position)
+        textMesh.lookAt(this.camera.position)
+
+        backgroundMesh.quaternion.copy(this.camera.quaternion)
         this.scene.add(backgroundMesh);
         this.scene.add(textMesh);
     });
@@ -279,22 +285,22 @@ rendering.animate();
 setTimeout(() => {
     //rendering.setRotation(-0.001);
     console.log("start rotation");
-    let coordinates = rendering.points_data.map(x=>({x:x.Long, y:x.Lat}));
+    let coordinates = rendering.points_data.map(x=>({x:x.Long, y:x.Lat, z:x.Year}));
     console.log(coordinates)
     console.log(coordinates[1].x);
     
-    rendering.create_point2(     
-        90,90
-        , "#7FFFD4"
-        )
+    // rendering.create_point2(     
+    //     90,90
+    //     , "#7FFFD4"
+    //     )
 
-    rendering.create_point2(    
-        0,90, "#FFA500"
-        )
+    // rendering.create_point2(    
+    //     0,90, "#FFA500"
+    //     )
     
-    rendering.create_point2(     
-        0,0, "#0000FF"
-        )
+    // rendering.create_point2(     
+    //     0,0, "#0000FF"
+    //     )
     
         
     // rendering.create_point2(     
@@ -319,7 +325,8 @@ setTimeout(() => {
     for (let i = 0; i < coordinates.length; i++) {
 
         console.log(i);
-        rendering.create_point2(coordinates[i].x,coordinates[i].y)
+        rendering.create_point2(coordinates[i].x,coordinates[i].y,"#FFFFFF",String(coordinates[i].z))
+        console.log(String(coordinates[i].z))
         
     }
 
