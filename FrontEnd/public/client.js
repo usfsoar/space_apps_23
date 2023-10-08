@@ -92,8 +92,8 @@ class Rendering {
     window.addEventListener('resize', () => {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        render();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.render();
     }, false);
 
 
@@ -109,32 +109,58 @@ class Rendering {
 
     }
 
-    create_point2(py,px,colors){ 
-        const pointGeo = new THREE.SphereGeometry(0.02, 20, 20);
-        const pointMat = new THREE.MeshPhongMaterial({color:colors});
-        this.pointMesh = new THREE.Mesh(pointGeo, pointMat);
+    create_point2(py, px, colors) {
+    const pointGeo = new THREE.SphereGeometry(0.02, 20, 20);
+    const pointMat = new THREE.MeshPhongMaterial({ color: colors });
+    this.pointMesh = new THREE.Mesh(pointGeo, pointMat);
 
-        let lng = (py) * Math.PI / 180 ;
-        let lat = (px) * Math.PI/ 180 ;
+    let lng = (py) * Math.PI / 180;
+    let lat = (px) * Math.PI / 180;
+    let x = (1) * 0.6 * Math.cos(lng) * Math.sin(lat);
+    let y = (1) * 0.6 * Math.sin(lng);
+    let z = (1) * 0.6 * Math.cos(lat) * Math.cos(lng);
 
-        let x;
-        let y;
-        let z;
+    this.pointMesh.position.set(x, y, z);
 
-        console.log(py,px)
+    this.scene.add(this.pointMesh);
+    const loader = new THREE.FontLoader();
+    loader.load('Orbitron_Regular.json', (font) => {
+        const geometry = new THREE.TextGeometry('Hello world, json, hello, my friend, darknes, rises, in light, anakin, obi wan, yoda, lol \nwtf', {
+            font: font,
+            size: 0.015,
+            height: 0.00001
+        });
 
-            x = (1)*0.6*Math.cos(lng) * Math.sin(lat);
-            y = (1)*0.6*Math.sin(lng);
-            z = (1)*0.6*Math.cos(lat) * Math.cos(lng);
+        // Create a bounding box for the text geometry to get its size
+        const box = new THREE.Box3().setFromObject(new THREE.Mesh(geometry));
+        const textSize = box.getSize(new THREE.Vector3());
 
+        const textMaterial = [
+            new THREE.MeshPhongMaterial({
+                color: 0xffffff,
+                emissive: 0xffffff  // Emitting a light
+            }),
+        ];
+        const textMesh = new THREE.Mesh(geometry, textMaterial);
+        // Adjust position based on the text's bounding box size
+        textMesh.position.y = y;
+        textMesh.position.x = x + 0.03;
+        textMesh.position.z = z;
 
-        console.log(x,y,z)
-            
-        this.pointMesh.position.set(x,y,z);
-        
+        // Create a rectangle background based on the text size
+        const backgroundGeometry = new THREE.PlaneGeometry(textSize.x + 0.1, textSize.y + 0.01);
+        const backgroundMaterial = new THREE.MeshBasicMaterial({ color: 0x000001 }); // Change color as needed
+        const backgroundMesh = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
+        backgroundMesh.position.y = y;
+        backgroundMesh.position.x = textMesh.position.x + 0.05 + (textSize.x / 2);  // Adjust position based on the text's bounding box size
+        backgroundMesh.position.z = z - 0.001; // Position it slightly behind the text
 
-        this.scene.add(this.pointMesh);    
-    };
+        this.scene.add(backgroundMesh);
+        this.scene.add(textMesh);
+    });
+
+};
+
 
 
     create_point3(px,py,colors){ 
@@ -271,31 +297,31 @@ setTimeout(() => {
         )
     
         
-    rendering.create_point2(     
-       -33, 330, "#FFFFFF"
-       )
+    // rendering.create_point2(     
+    //    -33, 330, "#FFFFFF"
+    //    )
 
-    rendering.create_point2(     
-        24,146, "#FFFFFF"
-    )
+    // rendering.create_point2(     
+    //     24,146, "#FFFFFF"
+    // )
 
-    rendering.create_point2(     
-        -21.25, 130, "#FFFFFF"
-        )
+    // rendering.create_point2(     
+    //     -21.25, 130, "#FFFFFF"
+    //     )
 
-    rendering.create_point2(     
-        54, 290, "#FFFFFF"
-        )
+    // rendering.create_point2(     
+    //     54, 290, "#FFFFFF"
+    //     )
         
     
     
 
-    // for (let i = 0; i < coordinates.length; i++) {
+    for (let i = 0; i < coordinates.length; i++) {
 
-    //     console.log(i);
-    //     rendering.create_point2(coordinates[i].x,coordinates[i].y)
+        console.log(i);
+        rendering.create_point2(coordinates[i].x,coordinates[i].y)
         
-    // }
+    }
 
 
 

@@ -1,18 +1,17 @@
-from flask import Flask, jsonify, request, send_from_directory
-from flask_cors import CORS
+from config.setup import app, socketio
+from flask import send_from_directory
 from flask_socketio import SocketIO, emit, join_room
 
-app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
 
 @app.route('/')
 def index():
-    return "SocketIO Server is Running"
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/admin')
 def admin():
     # Return the admin page html file
     return send_from_directory(app.static_folder, 'admin.html')
+
 @socketio.on('connect')
 def handle_connect():
     emit("emit_identify")
