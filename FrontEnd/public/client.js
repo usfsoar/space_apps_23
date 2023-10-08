@@ -109,28 +109,25 @@ class Rendering {
 
     }
 
-    create_point2(px,py,colors){ 
+    create_point2(py,px,colors){ 
         const pointGeo = new THREE.SphereGeometry(0.02, 20, 20);
         const pointMat = new THREE.MeshPhongMaterial({color:colors});
         this.pointMesh = new THREE.Mesh(pointGeo, pointMat);
 
-        let lat = (py) * Math.PI/ 180 ;
-        let lng = (px) * Math.PI / 180 ;
+        let lng = (py) * Math.PI / 180 ;
+        let lat = (px) * Math.PI/ 180 ;
+
         let x;
         let y;
         let z;
-        console.log(lng,lat)
-        if ((lng < 0) && (lat> Math.PI)) {
-            x = (1)*0.6*Math.cos(lng) * Math.sin(lat);
-            y = (-1)*0.6*Math.sin(lng) * Math.sin(lat);
-            z = (1)*0.6*Math.cos(lat);
 
-        }
-        else{
+        console.log(py,px)
+
             x = (1)*0.6*Math.cos(lng) * Math.sin(lat);
-            y = (1)*0.6*Math.sin(lng) * Math.sin(lat);
-            z = (1)*0.6*Math.cos(lat);
-        }
+            y = (1)*0.6*Math.sin(lng);
+            z = (1)*0.6*Math.cos(lat) * Math.cos(lng);
+
+
         console.log(x,y,z)
             
         this.pointMesh.position.set(x,y,z);
@@ -145,34 +142,32 @@ class Rendering {
         const pointMat = new THREE.MeshPhongMaterial({color:colors});
         this.pointMesh = new THREE.Mesh(pointGeo, pointMat);
 
-        let lat = (py) * Math.PI/ 180 ;
-        let lng = (px) * Math.PI / 180 ;
-        let x;
-        let y;
-        let z;
-        console.log(lng,lat)
-        if ((lng < 0) && (lat> Math.PI)) {
-            x = (1)*0.6*Math.cos(lng) * Math.sin(lat);
-            y = (-1)*0.6*Math.sin(lng) * Math.sin(lat);
-            z = (1)*0.6*Math.cos(lat);
+        let lng = (py) * Math.PI / 180 ;
+        let lat = (px) * Math.PI/ 180 ;
 
-        }
-        else{
-            x = (1)*0.6*Math.cos(lng) * Math.sin(lat);
-            y = (1)*0.6*Math.sin(lng) * Math.sin(lat);
-            z = (1)*0.6*Math.cos(lat);
-        }
+
+        console.log(py,px)
+
+        // Flattening factor for a perfect sphere (assuming f = 0)
+        const f = 0;
+
+        // Calculate geocentric latitude (ls)
+        const ls = Math.atan((1 - f)**2 * Math.tan(lat));
+
+        // Calculate ECEF coordinates
+        let x = 1 * Math.cos(ls) * Math.cos(lng) + 1 * Math.cos(lat) * Math.cos(lng);
+        let y = 1 * Math.cos(ls) * Math.sin(lng) + 1 * Math.cos(lat) * Math.sin(lng);
+        let z = 1 * Math.sin(ls) + 1 * Math.sin(lat);
+
+        // Return the ECEF coordinates as an object
+
         console.log(x,y,z)
-            
-        this.pointMesh.position.set(x,y,z);
+        
+        this.pointMesh.position.set(x*0.3,y*0.3,z*0.3);
         
 
         this.scene.add(this.pointMesh);    
     };
-
-
-
-
 
     async load_points_json(filename){
         let res = await fetch(filename);
@@ -183,7 +178,6 @@ class Rendering {
         console.log(this.points_data);
     }
     
- 
     setRotation(x) {
         this.rotate_value = x;
     }
@@ -259,7 +253,7 @@ rendering.animate();
 setTimeout(() => {
     //rendering.setRotation(-0.001);
     console.log("start rotation");
-    let coordinates = rendering.points_data.map(x=>({x:x.Lat, y:x.Long}));
+    let coordinates = rendering.points_data.map(x=>({x:x.Long, y:x.Lat}));
     console.log(coordinates)
     console.log(coordinates[1].x);
     
@@ -276,19 +270,32 @@ setTimeout(() => {
         0,0, "#0000FF"
         )
     
-        /*
+        
     rendering.create_point2(     
-        -90, 180, "#FFFFFF"
+       -33, 330, "#FFFFFF"
+       )
+
+    rendering.create_point2(     
+        24,146, "#FFFFFF"
+    )
+
+    rendering.create_point2(     
+        -21.25, 130, "#FFFFFF"
         )
-        */
+
+    rendering.create_point2(     
+        54, 290, "#FFFFFF"
+        )
+        
+    
     
 
-    for (let i = 0; i < coordinates.length; i++) {
-        console.log(i);
-       
-        rendering.create_point2(coordinates[i].x,coordinates[i].y)
+    // for (let i = 0; i < coordinates.length; i++) {
 
-    }
+    //     console.log(i);
+    //     rendering.create_point2(coordinates[i].x,coordinates[i].y)
+        
+    // }
 
 
 
