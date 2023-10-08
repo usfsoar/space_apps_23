@@ -6,7 +6,6 @@ let option=document.getElementById("btSwitcher");
 
 option.addEventListener('click', changeView.bind());
 
-
 function changeView(){
     if(current_visual=="main-visual"){
         current_visual="projector-visual";
@@ -17,5 +16,16 @@ function changeView(){
         projector_visual.style.display = "none";
         main_visual.style.display = "block";
     }
-    console.log(current_visual)
 }
+
+let full_screen=document.getElementById("projector-header")
+let switch_button=document.getElementById("btSwitcher")
+window.addEventListener('resize', (evt) => { 
+    if (window.innerHeight == screen.height) {
+        full_screen.style.display = "none";
+        switch_button.style.display = "none";
+    } else {
+        full_screen.style.display = "block";
+        switch_button.style.display = "block";
+    }
+});
