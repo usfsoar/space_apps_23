@@ -1,5 +1,6 @@
 class UI {
-    constructor() {
+    constructor(socketio) {
+      this.socket = socketio;
       this.currentZoom = 100;
       this.zoomInButton = document.getElementById('zoom-in');
       this.zoomOutButton = document.getElementById('zoom-out');
@@ -13,21 +14,26 @@ class UI {
 
   
       //add functions
+      
       this.zoomInButton.addEventListener('click', this.zoomIn.bind(this));
       this.zoomOutButton.addEventListener('click', this.zoomOut.bind(this));
       this.yearSlider.addEventListener('input', this.handleYearSlider.bind(this));
       this.updateYearValue();
+      this.searchButton = document.getElementById('search-button');
+      this.searchButton.addEventListener('click', this.search_request.bind(this));
       //functions for options
-      this.option1.addEventListener('change', this.updateCheck1.bind(this));
-
-
-
-
+      //this.option1.addEventListener('change', this.updateCheck1.bind(this));
       this.check=0;
-      this.btn1971=document.getElementById('proj-button1');
-      this.btn1971.addEventListener('click', this.setColor.bind(this));
+      //this.btn1971=document.getElementById('proj-button1');
+      //this.btn1971.addEventListener('click', this.setColor.bind(this));
     }
-  
+    search_request() {
+        //Get the value of the input field with id "search-bar" and emit a userRequest event
+        console.log("search request")
+        var searchBar = document.getElementById("search-bar");
+        var searchValue = searchBar.value;
+        this.socket.emit("userRequest", searchValue);
+    }
     zoomIn() {
         this.currentZoom += 10;
     }
@@ -44,6 +50,7 @@ class UI {
     updateYearValue() {
       // Update the displayed year value
       this.yearValue.textContent = this.currentYear;
+      this.socket.emit("changeYear", this.currentYear)
     }
 
     //create functions for options
@@ -68,6 +75,6 @@ class UI {
     }
 }
   
+export {UI}
   
-const ui = new UI();
-  
+// const ui = new UI();

@@ -125,7 +125,7 @@ class Rendering {
     this.scene.add(this.pointMesh);
     const loader = new THREE.FontLoader();
     loader.load('Orbitron_Regular.json', (font) => {
-        const geometry = new THREE.TextGeometry('Hello world, json, hello, my friend, darknes, rises, in light, anakin, obi wan, yoda, lol \nwtf', {
+        const geometry = new THREE.TextGeometry('Moonquake Location', {
             font: font,
             size: 0.015,
             height: 0.00001
@@ -208,16 +208,25 @@ class Rendering {
         this.rotate_value = x;
     }
     
-    change_texture(a,b) {
-        a = "texture/" + a.toString()
+    // change_texture(a,b) {
+    //     a = "texture/" + a.toString()
 
-        b = "texture/" + b.toString()
-        console.log(a,b)
-        this.earthMaterial.map = THREE.ImageUtils.loadTexture(a)    
-        this.earthMaterial.bumpmap = THREE.ImageUtils.loadTexture(b);
+    //     b = "texture/" + b.toString()
+    //     console.log(a,b)
+    //     this.earthMaterial.map = THREE.ImageUtils.loadTexture(a)    
+    //     this.earthMaterial.bumpmap = THREE.ImageUtils.loadTexture(b);
 
 
-    };
+    // };
+    change_texture(a, b) {
+    // Assuming a and b are base64 encoded data URLs
+    let textureLoader = new THREE.TextureLoader();
+
+    this.earthMaterial.map = textureLoader.load(a);
+    this.earthMaterial.bumpmap = textureLoader.load(b);
+}
+
+
 
 
     /*
@@ -270,68 +279,38 @@ class Rendering {
 };  
 
 
+export {Rendering};
 
-
-let rendering = new Rendering();
-rendering.setRotation(0);
-rendering.animate();
-
-setTimeout(() => {
-    //rendering.setRotation(-0.001);
-    console.log("start rotation");
-    let coordinates = rendering.points_data.map(x=>({x:x.Long, y:x.Lat}));
-    console.log(coordinates)
-    console.log(coordinates[1].x);
-    
-    rendering.create_point2(     
-        90,90
-        , "#7FFFD4"
-        )
-
-    rendering.create_point2(    
-        0,90, "#FFA500"
-        )
-    
-    rendering.create_point2(     
-        0,0, "#0000FF"
-        )
-    
-        
-    // rendering.create_point2(     
-    //    -33, 330, "#FFFFFF"
-    //    )
-
-    // rendering.create_point2(     
-    //     24,146, "#FFFFFF"
-    // )
-
-    // rendering.create_point2(     
-    //     -21.25, 130, "#FFFFFF"
-    //     )
-
-    // rendering.create_point2(     
-    //     54, 290, "#FFFFFF"
-    //     )
-        
-    
-    
-
-    for (let i = 0; i < coordinates.length; i++) {
-
-        console.log(i);
-        rendering.create_point2(coordinates[i].x,coordinates[i].y)
-        
-    }
-
-
-
-    //rendering.create_point(coordinates)
-
-    rendering.change_texture("moonmap.png","moonbump.png");
-    //rendering.change_texture("earthmap1k2.jpg","earthbump.jpg");
-
-    //console.log(capitals.CountryName)
-
-
-}, 1000);
+//let rendering = new Rendering();
+//rendering.setRotation(0);
+//rendering.animate();
+//
+//setTimeout(() => {
+//    //rendering.setRotation(-0.001);
+//    console.log("start rotation");
+//    let coordinates = rendering.points_data.map(x=>({x:x.Long, y:x.Lat}));
+//    console.log(coordinates)
+//    console.log(coordinates[1].x);
+//    
+//    rendering.create_point2(     
+//        90,90
+//        , "#7FFFD4"
+//        )
+//
+//    rendering.create_point2(    
+//        0,90, "#FFA500"
+//        )
+//    
+//    rendering.create_point2(     
+//        0,0, "#0000FF"
+//        )
+//    for (let i = 0; i < coordinates.length; i++) {
+//
+//        console.log(i);
+//        rendering.create_point2(coordinates[i].x,coordinates[i].y)
+//        
+//    }
+//    rendering.change_texture("moonmap.png","moonbump.png");
+//
+//}, 1000);
 
