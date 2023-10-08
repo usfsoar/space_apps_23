@@ -10,50 +10,66 @@
 </head>
 
 <body>
-    <!--Search bar-->
-    <div id="header">
-        <div style="display:flex; flex-wrap: nowrap;">
-            <input type="text" id="search-bar" placeholder="Input Coordinates...">
-            <button id="search-button">Search</button>
+    <div id="context-switcher">
+        <button id="btSwitcher">Switch view</button>
+    </div>
+        
+    </div>
+    <div id="main-visual">
+        <!--Search bar-->
+        <div id="header">
+            <div style="display:flex; flex-wrap: nowrap;">
+                <input type="text" id="search-bar" placeholder="Input Coordinates...">
+                <button id="search-button">Search</button>
+            </div>
+            <!--Zoom-->
+            <div id="zoom-buttons">
+                <button id="zoom-in">+</button>
+                <button id="zoom-out">-</button>
+            </div>
         </div>
-        <!--Zoom-->
-        <div id="zoom-buttons">
-            <button id="zoom-in">+</button>
-            <button id="zoom-out">-</button>
+
+        <!--Slider-->
+        <div id="year-slider-container">
+            <input type="range" id="year-slider" class="custom-slider" min="1969" max="1977" step="1" value="1969">
+            <span id="year-value">1969</span>
         </div>
+
+        <!-- Table Container -->
+        <div id="table-container">
+            <table id="data-table">
+                <tr>
+                    <td>> Display Information</td>
+                    <td><input type="checkbox" id="option1" name="option1" value="Option 1"></td>
+                </tr>
+                <tr>
+                    <td>> Display Lat and Long</td>
+                    <td><input type="checkbox" id="option2" name="option2" value="Option 2"></td>
+                </tr>
+                <tr>
+                    <td>> Show other layer</td>
+                    <td><input type="checkbox" id="option3" name="option3" value="Option 3"></td>
+                </tr>
+            </table>
+        </div>
+
+        
+
+        <canvas class="webgl rendering"></canvas>
+        <div class=""></div>
     </div>
 
-    <!--Slider-->
-    <div id="year-slider-container">
-        <input type="range" id="year-slider" class="custom-slider" min="1969" max="1977" step="1" value="1969">
-        <span id="year-value">1969</span>
-    </div>
-
-    <!-- Table Container -->
-    <div id="table-container">
-        <table id="data-table">
-            <tr>
-                <td>> Display Information</td>
-                <td><input type="checkbox" id="option1" name="option1" value="Option 1"></td>
-            </tr>
-            <tr>
-                <td>> Display Lat and Long</td>
-                <td><input type="checkbox" id="option2" name="option2" value="Option 2"></td>
-            </tr>
-            <tr>
-                <td>> Show other layer</td>
-                <td><input type="checkbox" id="option3" name="option3" value="Option 3"></td>
-            </tr>
-        </table>
-    </div>
-
-    
-
-    <canvas class="webgl rendering"></canvas>
-    <div class=""></div>
+    <div id="projector-visual">
+        <div id="header" style="margin: 4rem;">
+            <h3>Press F11 for full screen</h3>
+        </div>
+        <div class="img">
+            <img class="center-fit" src='./texture/moonmap.jpg'>
+        </div>
 
     <script type="module" src="./client.js"></script>
     <script src="ui-manager.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 
 </html>
