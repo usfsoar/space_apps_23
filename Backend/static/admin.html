@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Frontend</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Google Font: Orbitron -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap">
+</head>
+
+<body class="bg-teal-900 font-orbitron">
+
+    <div class="container mx-auto mt-10 p-5 rounded-lg bg-teal-800">
+
+        <!-- Connect button -->
+        <button id="connect" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded text-white mb-3">Connect</button>
+
+        <!-- Identify buttons -->
+        <button id="identify_app" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white mr-3">Identify as APP</button>
+        <button id="identify_map" class="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded text-white mb-3">Identify as MAP</button>
+
+        <!-- Test data button -->
+        <button id="send_data" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white mt-3">Send Test JSON</button>
+
+    </div>
+
+    <!-- Include Socket.io client -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+    <script>
+        const socket = io.connect('http://0.0.0.0:5000');
+
+        // Connect to the server
+        document.getElementById('connect').addEventListener('click', () => {
+            socket.connect();
+        });
+
+        // Handle 'emit_identify' event from server
+        socket.on('emit_identify', () => {
+            console.log('Server requested identification.');
+        });
+
+        // Identify as APP
+        document.getElementById('identify_app').addEventListener('click', () => {
+            socket.emit('identify', 'APP');
+        });
+
+        // Identify as MAP
+        document.getElementById('identify_map').addEventListener('click', () => {
+            socket.emit('identify', 'MAP');
+        });
+
+        // Send test JSON data
+        document.getElementById('send_data').addEventListener('click', () => {
+            const testData = {
+                key: 'value',
+                timestamp: new Date().toISOString()
+            };
+            socket.emit('request_update_data', testData);
+        });
+
+    </script>
+</body>
+
+</html>
