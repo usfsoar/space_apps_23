@@ -19,6 +19,13 @@ class UI {
       this.updateYearValue();
       //functions for options
       this.option1.addEventListener('change', this.updateCheck1.bind(this));
+
+
+
+
+      this.check=0;
+      this.btn1971=document.getElementById('proj-button1');
+      this.btn1971.addEventListener('click', this.setColor.bind(this));
     }
   
     zoomIn() {
@@ -47,8 +54,20 @@ class UI {
             this.option1Value = 0;
         }
     }
-  }
+    
+    setColor() {
+      console.log("cioa");
+      if (this.check == 0) {
+          this.btn1971btn.style.backgroundColor = "#FFFFFF";
+          this.check = 1;        
+      }
+      else {
+          this.btn1971btn.style.backgroundColor = "#7FFF00";
+          this.check = 0;
+      }
+    }
+}
   
   
-  const ui = new UI();
+const ui = new UI();
   
