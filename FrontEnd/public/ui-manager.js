@@ -32,7 +32,7 @@ class UI {
         console.log("search request")
         var searchBar = document.getElementById("search-bar");
         var searchValue = searchBar.value;
-        this.socket.emit("userRequest", searchValue);
+        this.socket.emit("user_request", searchValue);
     }
     zoomIn() {
         this.currentZoom += 10;

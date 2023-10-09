@@ -1,6 +1,7 @@
 from config.setup import app, socketio
 from flask import send_from_directory
 from flask_socketio import SocketIO, emit, join_room
+import controllers.data_requests as data_requests
 
 
 @app.route('/')
@@ -14,13 +15,16 @@ def admin():
 
 @socketio.on('connect')
 def handle_connect():
+    print("Client connected")
     emit("emit_identify")
 
 @socketio.on('identify')
 def handle_identify(data):
     if data == "APP":
+        print ("App connected")
         join_room("app_room")
     elif data == "MAP":
+        print ("Map connected")
         join_room("map_room")
 
 @socketio.on('request_update_data')

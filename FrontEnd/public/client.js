@@ -58,6 +58,7 @@ class Rendering {
 
     // earth mesh
     this.earthMesh = new THREE.Mesh(earthGeometry, this.earthMaterial);
+    this.earthMesh.layers.set(0);
     this.scene.add(this.earthMesh);
 
     // galaxy geometry
@@ -85,8 +86,8 @@ class Rendering {
     this.scene.add(pointLight);
 
     // point light helper
-    const Helper = new THREE.PointLightHelper(pointLight);
-    this.scene.add(Helper);
+    //const Helper = new THREE.PointLightHelper(pointLight);
+    //this.scene.add(Helper);
 
     // handling resizing
     window.addEventListener('resize', () => {
@@ -99,17 +100,21 @@ class Rendering {
 
     //point 
 
-    const axesHelper = new THREE.AxesHelper( 1 );
-    this.scene.add( axesHelper );
+    // const axesHelper = new THREE.AxesHelper( 1 );
+    // this.scene.add( axesHelper );
 
  
+    const mainLayer = 0;  // default layer
+    const overlayLayer = 1;  // special layer for non-occluded object
 
+    this.camera.layers.set(mainLayer);  // view main layer
+    this.camera.layers.enable(overlayLayer);  // also view overlay layer
     // current fps
     this.stats = Stats();
 
     }
 
-    create_point2(py, px, colors) {
+    create_point2(py, px, colors, text="") {
     const pointGeo = new THREE.SphereGeometry(0.02, 20, 20);
     const pointMat = new THREE.MeshPhongMaterial({ color: colors });
     this.pointMesh = new THREE.Mesh(pointGeo, pointMat);
@@ -124,8 +129,9 @@ class Rendering {
 
     this.scene.add(this.pointMesh);
     const loader = new THREE.FontLoader();
+    if (text != ""){
     loader.load('Orbitron_Regular.json', (font) => {
-        const geometry = new THREE.TextGeometry('Moonquake Location', {
+        const geometry = new THREE.TextGeometry(text, {
             font: font,
             size: 0.015,
             height: 0.00001
@@ -143,10 +149,11 @@ class Rendering {
         ];
         const textMesh = new THREE.Mesh(geometry, textMaterial);
         // Adjust position based on the text's bounding box size
-        textMesh.position.y = y;
+        textMesh.position.y = y + 0.02;
         textMesh.position.x = x + 0.03;
         textMesh.position.z = z;
 
+        textMesh.layers.set(1);  // Display in overlay layer
         // Create a rectangle background based on the text size
         const backgroundGeometry = new THREE.PlaneGeometry(textSize.x + 0.1, textSize.y + 0.01);
         const backgroundMaterial = new THREE.MeshBasicMaterial({ color: 0x000001 }); // Change color as needed
@@ -154,10 +161,12 @@ class Rendering {
         backgroundMesh.position.y = y;
         backgroundMesh.position.x = textMesh.position.x + 0.05 + (textSize.x / 2);  // Adjust position based on the text's bounding box size
         backgroundMesh.position.z = z - 0.001; // Position it slightly behind the text
+        backgroundMesh.layers.set(1);  // Display in overlay layer
 
         this.scene.add(backgroundMesh);
         this.scene.add(textMesh);
     });
+    }
 
 };
 
@@ -271,7 +280,9 @@ class Rendering {
 
     // rendering
     render = () => {
-       
+        
+
+
         this.renderer.render(this.scene, this.camera);
     }
 

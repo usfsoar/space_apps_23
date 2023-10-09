@@ -1,6 +1,9 @@
 import {Rendering} from "./client.js"
 import {UI} from "./ui-manager.js"
 var socket = io.connect('http://127.0.0.1:5000');
+socket.on('emit_identify', function(){
+    socket.emit('identify', 'APP');
+});
 
 let main_visual=document.getElementById("main-visual");
 let projector_visual=document.getElementById("projector-visual");
@@ -39,7 +42,7 @@ rendering.setRotation(0);
 rendering.animate();
 
 const ui = new UI(socket);
-socket.on("changeTexture", (data)=>{
+socket.on("ChangeTexture", (data)=>{
     console.log("change texture");
     rendering.change_texture(data.texture, data.bump);
 });
@@ -162,29 +165,18 @@ socket.on("ChangeMap", (data)=>{
     moonmap.src = texture;
 
 })
+socket.emit("user_request", "moon");
 setTimeout(() => {
     //rendering.setRotation(-0.001);
     console.log("start rotation");
-    let coordinates = rendering.points_data.map(x=>({x:x.Long, y:x.Lat}));
+    let coordinates = rendering.points_data.map(x=>({x:x.Long, y:x.Lat, day: x.Day, year:x.Year, hour:x.H, minute:x.M, magnitude:x.Magnitude}));
     console.log(coordinates)
     console.log(coordinates[1].x);
     
-    rendering.create_point2(     
-        90,90
-        , "#7FFFD4"
-        )
-
-    rendering.create_point2(    
-        0,90, "#FFA500"
-        )
-    
-    rendering.create_point2(     
-        0,0, "#0000FF"
-        )
     for (let i = 0; i < coordinates.length; i++) {
-
-        console.log(i);
-        rendering.create_point2(coordinates[i].x,coordinates[i].y)
+      //I want the following format for instance: 09/07/1971\n12:00\n Magnitude: 3.5
+        let text = coordinates[i].day + "/" + coordinates[i].year + "\n" + coordinates[i].hour + ":" + coordinates[i].minute + "\nMagnitude: " + coordinates[i].magnitude;
+        rendering.create_point2(coordinates[i].x,coordinates[i].y, "#ff0000", text)
         
     }
     //rendering.change_texture("moonmap.png","moonbump.png");

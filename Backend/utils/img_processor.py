@@ -60,6 +60,10 @@ def process_quake_requests(requests):
 def process_year_request(year):
     #create a list of all the days in the yeary based on locations.json
     points = [get_location(request={'Year':year}) ]
+    texture_image_base64 = plot_quakes(points)
+    with open("moon_bump.jpg", "rb") as image_file:
+        bump_image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+    return texture_image_base64, bump_image_base64
     
 # f = open('locations.json')
 # data=json.load(f)
