@@ -114,7 +114,7 @@ class Rendering {
 
     }
 
-    create_point2(py, px, colors, text="", text) {
+    create_point2(py, px, colors, text="") {
     const pointGeo = new THREE.SphereGeometry(0.02, 20, 20);
     const pointMat = new THREE.MeshPhongMaterial({ color: colors });
     this.pointMesh = new THREE.Mesh(pointGeo, pointMat);
