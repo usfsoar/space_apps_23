@@ -114,7 +114,7 @@ class Rendering {
 
     }
 
-    create_point2(py, px, colors, text="") {
+    create_point2(py, px, colors, text="", text) {
     const pointGeo = new THREE.SphereGeometry(0.02, 20, 20);
     const pointMat = new THREE.MeshPhongMaterial({ color: colors });
     this.pointMesh = new THREE.Mesh(pointGeo, pointMat);
@@ -137,9 +137,11 @@ class Rendering {
             height: 0.00001
         });
 
+
         // Create a bounding box for the text geometry to get its size
         const box = new THREE.Box3().setFromObject(new THREE.Mesh(geometry));
         const textSize = box.getSize(new THREE.Vector3());
+        
 
         const textMaterial = [
             new THREE.MeshPhongMaterial({
@@ -163,6 +165,10 @@ class Rendering {
         backgroundMesh.position.z = z - 0.001; // Position it slightly behind the text
         backgroundMesh.layers.set(1);  // Display in overlay layer
 
+        backgroundMesh.lookAt(this.camera.position)
+        textMesh.lookAt(this.camera.position)
+
+        backgroundMesh.quaternion.copy(this.camera.quaternion)
         this.scene.add(backgroundMesh);
         this.scene.add(textMesh);
     });
